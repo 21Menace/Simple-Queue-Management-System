@@ -45,5 +45,5 @@ A lightweight campus Queue Management MVP. Students can register, join queues, a
 - Modify `BASE_URL` in `config/config.php` if hosted in a subdirectory.
 - For production, add CSRF protection and input validation hardening.
 
-##Access the web version through
+## Live Demo
 cqm.page.gd
