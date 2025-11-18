@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>QMS - Smart Campus Queue Management</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Inter", system-ui, -apple-system, sans-serif;
+        min-height: 100vh;
+        background: url("https://images.pexels.com/photos/34211745/pexels-photo-34211745.jpeg")
+          center/cover no-repeat fixed;
+        position: relative;
+        color: #1a1a1a;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.35);
+        backdrop-filter: blur(2px);
+        z-index: 0;
+      }
+
+      /* === NAVBAR === */
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.25rem 4rem;
+      }
+
+      header .logo {
+        font-family: "Times New Roman", Times, serif;
+        font-size: 1.5em; /* Slightly smaller size often suits script/serif styles */
+        font-weight: normal; /* Script fonts usually don't need heavy weight */
+        font-style: italic;
+        text-transform: capitalize; /* Use capitalization for a flowing style, not all caps */
+        color: #333333; /* Dark gray for a softer, less corporate look */
+        letter-spacing: 0.05em;
+        line-height: 1.2;
+        display: inline-block;
+      }
+
+      nav ul {
+        display: flex;
+        list-style: none;
+        gap: 2.5rem;
+        align-items: center;
+      }
+
+      nav ul li a {
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 15px;
+        color: #1a1a1a;
+        transition: all 0.3s;
+        position: relative;
+      }
+
+      nav ul li a::after {
+        content: "";
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: #1a1a1a;
+        transition: width 0.3s;
+      }
+
+      nav ul li a:hover::after {
+        width: 100%;
+      }
+
+      .mobile-menu {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+      }
+
+      .mobile-menu span {
+        width: 25px;
+        height: 3px;
+        background: #1a1a1a;
+        border-radius: 3px;
+        transition: 0.3s;
+      }
+
+      /* === HERO SECTION === */
+      .hero {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        margin-top: 10rem;
+        padding: 4rem 2rem 6rem;
+      }
+
+      h1 {
+        font-size: 64px;
+        font-weight: 800;
+        margin-bottom: 24px;
+        letter-spacing: -2px;
+        line-height: 1.1;
+      }
+
+      h2 {
+        font-size: 42px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        letter-spacing: -1px;
+      }
+
+      .subtitle {
+        font-size: 22px;
+        color: #4b5563;
+        margin-bottom: 20px;
+        font-weight: 500;
+      }
+
+      .description {
+        font-size: 17px;
+        color: #6b7280;
+        margin-bottom: 48px;
+        line-height: 1.7;
+        max-width: 750px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .actions {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 64px;
+      }
+
+      /* === BUTTONS === */
+      .btn {
+        padding: 18px 36px;
+        border-radius: 28px;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        min-width: 200px;
+      }
+
+      .btn-primary {
+        background: #1a1a1a;
+        color: #ffffff;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .btn-primary:hover {
+        background: #2d2d2d;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+      }
+
+      .btn-primary:active {
+        transform: translateY(0);
+      }
+
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px) saturate(180%);
+        -webkit-backdrop-filter: blur(10px) saturate(180%);
+        color: #1a1a1a;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+      }
+
+      .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.45);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      }
+
+      /* === FEATURES === */
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 32px;
+        margin: 6rem auto;
+        max-width: 1100px;
+        padding: 0 2rem;
+        position: relative;
+        z-index: 2;
+      }
+
+      .feature {
+        text-align: center;
+        padding: 40px 32px;
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(16px) saturate(180%);
+        -webkit-backdrop-filter: blur(16px) saturate(180%);
+        border-radius: 28px;
+        transition: all 0.4s ease;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .feature:hover {
+        transform: translateY(-8px);
+        background: rgba(255, 255, 255, 0.35);
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      .feature-icon {
+        font-size: 56px;
+        margin-bottom: 20px;
+        display: block;
+      }
+
+      .feature-title {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 12px;
+      }
+
+      .feature-text {
+        font-size: 15px;
+        color: #6b7280;
+        line-height: 1.6;
+      }
+
+      /* === ABOUT & CONTACT SECTIONS === */
+      .section-wrapper {
+        position: relative;
+        z-index: 2;
+        max-width: 900px;
+        margin: 8rem auto 4rem;
+        padding: 0 2rem;
+        text-align: center;
+      }
+
+      .section-card h2 {
+        margin-bottom: 24px;
+      }
+
+      .contact-link {
+        color: #1a1a1a;
+        font-weight: 600;
+        text-decoration: none;
+        padding: 2px 8px;
+        background: rgba(255, 255, 255, 0.4);
+        border-radius: 6px;
+        transition: all 0.3s;
+      }
+
+      .contact-link:hover {
+        background: rgba(255, 255, 255, 0.6);
+        transform: translateY(-1px);
+      }
+
+      /* === FOOTER === */
+      footer {
+        backdrop-filter: saturate(180%);
+        -webkit-backdrop-filter: saturate(180%);
+        text-align: center;
+        padding: 2rem;
+        color: #6b7280;
+        font-size: 15px;
+        font-weight: 500;
+        margin-top: 8rem;
+      }
+
+      footer a {
+        color: #1a1a1a;
+        text-decoration: none;
+        font-weight: 600;
+        transition: opacity 0.3s;
+      }
+
+      footer a:hover {
+        opacity: 0.9;
+      }
+
+      /* === RESPONSIVE === */
+      @media (max-width: 968px) {
+        header {
+          padding: 1.25rem 2rem;
+        }
+
+        nav {
+          display: none;
+        }
+
+        .mobile-menu {
+          display: flex;
+        }
+
+        h1 {
+          font-size: 48px;
+        }
+
+        h2 {
+          font-size: 36px;
+        }
+
+        .hero {
+          margin-top: 8rem;
+          padding: 3rem 1.5rem 4rem;
+        }
+
+        .features {
+          grid-template-columns: 1fr;
+          gap: 24px;
+        }
+
+        .actions {
+          flex-direction: column;
+        }
+
+        .btn {
+          width: 100%;
+        }
+
+        .section-card {
+          padding: 3rem 2rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        h1 {
+          font-size: 36px;
+        }
+
+        .subtitle {
+          font-size: 18px;
+        }
+
+        .description {
+          font-size: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <header>
+      <div class="logo">QMS</div>
+      <nav>
+        <ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="mobile-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+      <h1>Smart Campus<br />Queue Management</h1>
+      <p class="subtitle">Join queues and track your position in real-time</p>
+      <p class="description">
+        Skip the wait and maximize your time. Access all campus services
+        seamlessly, get real-time updates on your position, and receive
+        notifications when it's your turn—no more standing in line.
+      </p>
+
+      <div class="actions">
+        <a href="http://localhost/QMS/public/login.php" class="btn btn-primary">
+          <span>Log In</span>
+          <span>→</span>
+        </a>
+        <a
+          href="http://localhost/QMS/public/register.php"
+          class="btn btn-secondary"
+        >
+          Create Account
+        </a>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features" class="features">
+      <div class="feature">
+        <span class="feature-icon">⚡</span>
+        <div class="feature-title">Real-Time Updates</div>
+        <div class="feature-text">
+          Track your position in the queue with live updates every few seconds
+        </div>
+      </div>
+
+      <div class="feature">
+        <span class="feature-icon">🔔</span>
+        <div class="feature-title">Smart Notifications</div>
+        <div class="feature-text">
+          Get notified when you're next in line through instant push alerts
+        </div>
+      </div>
+
+      <div class="feature">
+        <span class="feature-icon">📱</span>
+        <div class="feature-title">Mobile Friendly</div>
+        <div class="feature-text">
+          Access the system anywhere on campus using your phone or laptop
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section-wrapper">
+      <div class="section-card">
+        <h2>About QMS</h2>
+        <p class="description">
+          QMS (Queue Management System) simplifies how students and staff access
+          services by digitizing queue management—saving time and boosting
+          efficiency across campus.
+        </p>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section-wrapper">
+      <div class="section-card">
+        <h2>Contact Us</h2>
+        <p class="description">
+          Have questions or need help? Reach out at
+          <a href="mailto:support@qms.com" class="contact-link"
+            >support@qms.com</a
+          >
+        </p>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      © 2025 QMS – Smart Campus Queue Management |
+      <a href="#contact">Contact Support</a>
+    </footer>
+  </body>
+</html>
